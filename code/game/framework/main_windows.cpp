@@ -1,19 +1,33 @@
 #include "glare/core/common.h"
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
-
-#include "glare/math/vector.h"
 #include "glare/core/window.h"
-
+#include "glare/render/vertex.h"
+#include "glare/render/shader.h"
+#include "framework/app.h"
+#include "glare/dev/dev_ui.h"
+#include "imgui/imgui.h"
 using namespace glare;
 
-bool RUN = true;
 
+LRESULT ImGui_ImplWin32_WndProcHandler(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
+static LRESULT(*_imgui_proc) (HWND, UINT, WPARAM, LPARAM) = ImGui_ImplWin32_WndProcHandler;
+
+app* the_app = nullptr;
 bool game_windows_message_handling_procedure(void* hwnd, unsigned long int message_code, unsigned long long int wparam, long long int lparam)
 {
+	const ImGuiIO *imgui_io = nullptr;
+	if(dev_ui::m_run) {
+		_imgui_proc(static_cast<HWND>(hwnd), message_code, wparam, lparam);
+		imgui_io = &ImGui::GetIO();
+	}
 	if (message_code == WM_CLOSE) {
-		RUN = false;
+		the_app->event_close();
 		return true;
+	} else if (message_code == WM_CHAR) {
+		if (imgui_io && imgui_io->WantCaptureKeyboard) {
+			return false;
+		}
 	}
 	return false;
 }
@@ -27,19 +41,14 @@ int WINAPI WinMain(_In_ HINSTANCE application_instance, _In_opt_ HINSTANCE prev_
 	DEFAULT_WINDOW_EVENT_PROC = game_windows_message_handling_procedure;
 	// Start up
 	// #Todo: Load game config XML
-	// #Todo: Create Window
-	window* m_window = new window();
-	m_window->create("Glare Zoo", 1.0f, 0.9f, DEFAULT_WINDOW_EVENT_PROC);
-	// Init clock
-	//g_master_clock = new clock(nullptr);
-	// #Todo: Create App
-
-	while (RUN)
+	the_app = new app();
+	the_app->start();
+	while (the_app->m_run)
 	{
-		m_window->begin_frame();
-		m_window->end_frame();
+		the_app->run_frame();
+		Sleep(16);
 	}
-
-	delete m_window;
+	the_app->stop();
+	delete the_app;
 	return 0;
 }

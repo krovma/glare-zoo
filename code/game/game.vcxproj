@@ -189,7 +189,14 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="framework\app.cpp" />
     <ClCompile Include="framework\main_windows.cpp" />
+    <ClCompile Include="gameplay\game.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="framework\app.h" />
+    <ClInclude Include="framework\common.h" />
+    <ClInclude Include="gameplay\game.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

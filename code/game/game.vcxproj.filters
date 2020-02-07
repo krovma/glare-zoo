@@ -15,5 +15,22 @@
     <ClCompile Include="framework\main_windows.cpp">
       <Filter>framework</Filter>
     </ClCompile>
+    <ClCompile Include="framework\app.cpp">
+      <Filter>framework</Filter>
+    </ClCompile>
+    <ClCompile Include="gameplay\game.cpp">
+      <Filter>gameplay</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="framework\app.h">
+      <Filter>framework</Filter>
+    </ClInclude>
+    <ClInclude Include="framework\common.h">
+      <Filter>framework</Filter>
+    </ClInclude>
+    <ClInclude Include="gameplay\game.h">
+      <Filter>gameplay</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
